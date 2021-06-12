@@ -6,6 +6,7 @@ using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     public static PhotonManager instance;
@@ -27,7 +28,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public Transform players;
     public GameObject playerItemPrefab;
 
+    [Header("Start")]
     public GameObject startButton;
+
+    
 
     void Awake()
     {
@@ -55,7 +59,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Joined Lobby");
-        //PhotonNetwork.JoinOrCreateRoom("Game", new RoomOptions { MaxPlayers = maxPlayersPerRoom }, TypedLobby.Default);
     }
 
 
@@ -95,7 +98,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LeaveRoom();
         }
-        MenuManager.instance.OpenMenu("roomlist");
     }
 
     public override void OnLeftRoom()

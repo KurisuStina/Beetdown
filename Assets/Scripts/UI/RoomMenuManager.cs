@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class RoomMenu : MonoBehaviour
+public class RoomMenuManager : MonoBehaviour
 {
     public TextMeshProUGUI playerNameText;
 

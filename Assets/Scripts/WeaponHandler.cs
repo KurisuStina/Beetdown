@@ -33,7 +33,7 @@ public class WeaponHandler : MonoBehaviour
                 if (!canAttack)
                     break;
                     
-                pv.RPC("Shoot", RpcTarget.All, Camera.main.ScreenToWorldPoint(Input.mousePosition), data.speed);
+                pv.RPC("Shoot", RpcTarget.All, Camera.main.ScreenToWorldPoint(Input.mousePosition), data.Speed);
                 StartCoroutine(attackTimer());
 
                 break;
@@ -45,19 +45,19 @@ public class WeaponHandler : MonoBehaviour
     {
         Projectile projectile = PhotonNetwork.Instantiate("Projectile", transform.position, Quaternion.Euler(0, 0, InputManager.instance.mouseAngle(mousePosition, transform.position) + getShootOffset())).GetComponent<Projectile>();
         projectile.Set(data.projectileSprite, 
-            InputManager.instance.mouseDirection(mousePosition, transform.position) * speed, data.damage, 
-            data.range, 
+            InputManager.instance.mouseDirection(mousePosition, transform.position) * speed, data.Damage, 
+            data.Range, 
             data.projectileSprite.bounds.extents, 
             pv.IsMine,
-            data.duration,
-            data.magnitude);
+            data.Duration,
+            data.Magnitude);
     }
 
 
     IEnumerator attackTimer()
     {
         canAttack = false;
-        yield return new WaitForSeconds(data.attackSpeed);
+        yield return new WaitForSeconds(data.AttackSpeed);
         canAttack = true;
     }
 
@@ -67,7 +67,7 @@ public class WeaponHandler : MonoBehaviour
 
     public float getShootOffset()
     {
-        return Random.Range(-data.maxRecoil, data.maxRecoil);
+        return Random.Range(-data.Inaccuracy, data.Inaccuracy);
     }
 
 

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour
 {
-    public static PlayerInfo info;
-
     public const string playerNamePref = "PlayerName";
+
     public string playerName;
+    public Sprite character;
+    public WeaponData weapon;
 
     void Start()
     {
-        info = this;
 
     }
 

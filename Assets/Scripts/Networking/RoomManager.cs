@@ -8,7 +8,7 @@ using System.IO;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager instance;
-    // Start is called before the first frame update
+
     void Awake()
     {
         if (instance)

@@ -13,10 +13,10 @@ public class PlayerItem : MonoBehaviourPunCallbacks
 
     private Player player;
 
-    public void Initialize(Player playerInfo)
+    public void Initialize(Player newPlayer)
     {
-        player = playerInfo;
-        playerName.text = playerInfo.NickName;
+        player = newPlayer;
+        playerName.text = newPlayer.NickName;
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -30,5 +30,6 @@ public class PlayerItem : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Destroy(gameObject);
+
     }
 }
