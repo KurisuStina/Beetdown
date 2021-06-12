@@ -1,42 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using Photon.Pun;
 
-public class PlayerInputField : MonoBehaviour
+public class PlayerInputField : InputField
 {
-    public TMP_InputField nameInputField;
-    public Button continueButton;
 
-    void Start()
+    protected override void Activate()
     {
-        InitInputField();
+        SavePlayerName();
+        MenuManager.instance.OpenMenu("lobby");
     }
 
-    void InitInputField()
+    override protected void InitInputField()
     {
         if (!PlayerPrefs.HasKey(PlayerInfo.playerNamePref))
         {
-            SetContinueButton("");
             return;
         }
-        Debug.Log("init input field");
         string pName = PlayerPrefs.GetString(PlayerInfo.playerNamePref);
-        nameInputField.text = pName;
-        SetContinueButton(pName);
+        inputField.text = pName;
     }
 
-    public void SetContinueButton(string playerName)
+    void SavePlayerName()
     {
-        Debug.Log("Set name");
-        continueButton.interactable = !string.IsNullOrEmpty(playerName);
-    }
-
-    public void SavePlayerName()
-    {
-        string playerName = nameInputField.text;
+        string playerName = inputField.text;
         PhotonNetwork.NickName = playerName;
 
         PlayerPrefs.SetString(PlayerInfo.playerNamePref, playerName);
