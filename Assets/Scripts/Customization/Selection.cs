@@ -5,16 +5,25 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class SelectionItem : MonoBehaviour
 {
     private Selectable currentSelect;
     public Selectable selectable;
 
+    [HideInInspector]public Button button;
+
+    void Awake()
+    {
+        button = GetComponent<Button>();
+    }
 }
 
 public class Selection : MonoBehaviour
 {
+    public static event UnityAction OnCustomChange;
+
     public Selectable[] selections;
 
     public Transform selectionPanel;
@@ -25,12 +34,12 @@ public class Selection : MonoBehaviour
 
     void Awake()
     {
-        MenuManager.instance.menuChange += Initialize;
+        MenuManager.OnMenuChange += Initialize;
     }
 
+    #region Selection Methods
     void Initialize()
     {
-        Debug.Log("Initialize Selection");
         if(selectionPanel.transform.childCount > 0)
         {
             foreach (Transform child in selectionPanel.transform)
@@ -43,17 +52,24 @@ public class Selection : MonoBehaviour
             GameObject newItem = Instantiate(selectionItemPrefab, selectionPanel);
             newItem.GetComponent<Image>().sprite = selection.sprite;
 
-            newItem.AddComponent<SelectionItem>().selectable = selection;
-
+            #region Init SelectionItem
+            SelectionItem sItem = newItem.AddComponent<SelectionItem>();
+            sItem.selectable = selection;
+            sItem.button?.onClick.AddListener(delegate { Select(selection); }) ;
+            #endregion
+            
+            #region EventTrigger
             EventTrigger.Entry entry1 = new EventTrigger.Entry();
             entry1.eventID = EventTriggerType.PointerEnter;
             entry1.callback.AddListener((eventData) => { DisplayStats(selection); });
             EventTrigger.Entry entry2 = new EventTrigger.Entry();
             entry2.eventID = EventTriggerType.PointerExit;
             entry2.callback.AddListener((eventData2) => { RemoveStats(); });
-
+            
             newItem.GetComponent<EventTrigger>().triggers.Add(entry1);
             newItem.GetComponent<EventTrigger>().triggers.Add(entry2);
+            #endregion
+
         }
     }
 
@@ -89,4 +105,20 @@ public class Selection : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region UI Methods
+
+    public void Select(Selectable selection)
+    {
+        if (selection is CharacterData)
+            RoomManager.instance.playerInfo.ChangeCharacter((CharacterData)selection);
+        else if (selection is WeaponData)
+            RoomManager.instance.playerInfo.ChangeWeapon((WeaponData)selection);
+
+        MenuManager.instance.OpenMenu("room");
+        OnCustomChange?.Invoke();
+    }
+
+    #endregion
 }

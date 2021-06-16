@@ -6,12 +6,12 @@ using Photon.Realtime;
 
 public class RoomItem : MonoBehaviour
 {
-    private TextMeshProUGUI text;
+    public TextMeshProUGUI text;
     private RoomInfo info;
 
     void Start()
     {
-        text = GetComponentInChildren<TextMeshProUGUI>();
+
     }
 
     public void Initialize(RoomInfo roomInfo)
@@ -22,6 +22,6 @@ public class RoomItem : MonoBehaviour
 
     public void OnClick()
     {
-        PhotonManager.instance.JoinRoom(info);
+        Launcher.instance.JoinRoom(info);
     }
 }

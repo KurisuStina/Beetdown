@@ -9,6 +9,12 @@ public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager instance;
 
+    public CharacterData default_char;
+    public WeaponData default_weapon;
+
+    public PlayerInfo playerInfo;
+    public PlayerItem playerItem;
+
     void Awake()
     {
         if (instance)
@@ -18,6 +24,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
         DontDestroyOnLoad(gameObject);
         instance = this;
+
+        playerInfo = new PlayerInfo(default_char, default_weapon);
+
+        Selection.OnCustomChange += UpdatePlayerItem;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -40,4 +50,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    #region Player Methods
+    public void UpdatePlayerItem()
+    {
+        playerItem?.UpdateUI(playerInfo);
+    }
+    #endregion
 }

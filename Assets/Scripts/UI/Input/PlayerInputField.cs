@@ -18,8 +18,6 @@ public class PlayerInputField : InputField
         {
             return;
         }
-        string pName = PlayerPrefs.GetString(PlayerInfo.playerNamePref);
-        inputField.text = pName;
     }
 
     void SavePlayerName()

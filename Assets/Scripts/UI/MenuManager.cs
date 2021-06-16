@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MenuManager : MonoBehaviour
 {
-    public delegate void OnMenuChange();
-    public event OnMenuChange menuChange;
+    public static event UnityAction OnMenuChange;
 
     public static MenuManager instance;
     public Menu[] menus;
@@ -57,27 +57,6 @@ public class MenuManager : MonoBehaviour
             }
         }
 
-        menuChange?.Invoke();
-    }
-    //IEnumerator MenuTransition(Menu menu)
-    //{
-    //    anim.SetTrigger("Start");
-
-    //    foreach (Menu m in menus)
-    //    {
-    //        if (m.isOpen)
-    //        {
-    //            CloseMenu(m);
-    //        }
-    //    }
-    //    menu.Open();
-
-    //    menuChange?.Invoke();
-    //}
-
-    void TransitionAnimation()
-    {
-        Debug.Log("Play Transition");
-        anim.Play("MenuTransition");
+        OnMenuChange?.Invoke();
     }
 }

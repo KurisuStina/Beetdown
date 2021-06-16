@@ -9,7 +9,7 @@ public class RoomMenuManager : MonoBehaviour
 
     void Awake()
     {
-        MenuManager.instance.menuChange += SetName;
+        MenuManager.OnMenuChange += SetName;
     }
 
     void SetName()

@@ -19,9 +19,18 @@ public class InputField : MonoBehaviour
         {
             Activate();
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Return();
+        }
     }
 
     virtual protected void Activate()
+    {
+
+    }
+
+    virtual protected void Return()
     {
 
     }

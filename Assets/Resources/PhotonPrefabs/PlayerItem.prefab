@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4844014230718484850}
   - component: {fileID: 4844014230718484848}
   - component: {fileID: 4844014230718484849}
+  - component: {fileID: 453594950505357835}
+  - component: {fileID: 7480019315642350811}
   m_Layer: 5
   m_Name: PlayerItem
   m_TagString: Untagged
@@ -76,6 +78,43 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &453594950505357835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4844014230718484851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &7480019315642350811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4844014230718484851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ef5adcb3fb7cf7468fe41de7bc0dd41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAvatar: {fileID: 4844014231340320465}
+  playerWeapon: {fileID: 4844014231630618851}
+  playerName: {fileID: 4844014231888694844}
 --- !u!1 &4844014231340320467
 GameObject:
   m_ObjectHideFlags: 0

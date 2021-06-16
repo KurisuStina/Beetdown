@@ -5,11 +5,15 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Events;
+using System.IO;
 
 
-public class PhotonManager : MonoBehaviourPunCallbacks
+public class Launcher : MonoBehaviourPunCallbacks
 {
-    public static PhotonManager instance;
+    public static Launcher instance;
+
+    public static event UnityAction OnPlayerListChange;
 
     //Change this on each publish
     private const string GameVersion = "0.0.1";
@@ -43,12 +47,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             return;
         }
         instance = this;
+
+        OnPlayerListChange += SetStartButton;
     }
 
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
     }
+
+
+
+    #region Methods
 
     public void StartGame()
     {
@@ -59,7 +69,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         if (string.IsNullOrEmpty(roomNameInput.text))
             return;
-        Debug.Log("Created room: " + roomNameInput.text);
         PhotonNetwork.CreateRoom(roomNameInput.text, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
         MenuManager.instance.OpenMenu("room");
     }
@@ -75,6 +84,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LeaveRoom();
         }
     }
+
+
+    #endregion
+
+    #region PlayerListChange Methods
+
+    void SetStartButton()
+    {
+        Debug.Log("Start button changed");
+        startButton.SetActive(PhotonNetwork.IsMasterClient);
+    }
+
+    #endregion
 
     #region Photon Methods    
     public override void OnConnectedToMaster()
@@ -97,10 +119,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            //Instantiate(playerItemPrefab, players).GetComponent<PlayerItem>().Initialize(player);
+            Instantiate(playerItemPrefab, players).GetComponent<PlayerItem>().Initialize(player);
         }
 
-        //startButton.SetActive(PhotonNetwork.IsMasterClient);
+        OnPlayerListChange?.Invoke();
     }
 
     public override void OnLeftRoom()
@@ -111,6 +133,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        foreach (Transform roomItem in rooms)
+        {
+            Destroy(roomItem.gameObject);
+        }
         foreach (RoomInfo room in roomList)
         {
             if (room.RemovedFromList || room.PlayerCount == maxPlayersPerRoom)
@@ -125,7 +151,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Instantiate(playerItemPrefab, players).GetComponent<PlayerItem>().Initialize(newPlayer);
+        GameObject playerItem = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerItem"), Vector2.zero, Quaternion.identity);
+        playerItem.GetComponent<PlayerItem>().Initialize(newPlayer);
+        playerItem.transform.SetParent(players);
+
+        OnPlayerListChange?.Invoke();
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        OnPlayerListChange?.Invoke();
     }
 
     #endregion
