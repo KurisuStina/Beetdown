@@ -28,7 +28,6 @@ public class Selection : MonoBehaviour
         MenuManager.instance.menuChange += Initialize;
     }
 
-
     void Initialize()
     {
         Debug.Log("Initialize Selection");
@@ -41,7 +40,6 @@ public class Selection : MonoBehaviour
         }
         foreach(Selectable selection in selections)
         {
-            Debug.Log("Instantiate selection item");
             GameObject newItem = Instantiate(selectionItemPrefab, selectionPanel);
             newItem.GetComponent<Image>().sprite = selection.sprite;
 
@@ -64,8 +62,6 @@ public class Selection : MonoBehaviour
     //use if else for now
     public void DisplayStats(Selectable selection)
     {
-        Debug.Log("Display Stats");
-
         //i hate this
         Type type = typeof(Selectable);
         if (selection is CharacterData)
@@ -76,7 +72,6 @@ public class Selection : MonoBehaviour
         foreach(var field in type.GetFields())
         {
             bool displayable = Attribute.IsDefined(field, typeof(Displayable));
-            Debug.Log(field.Name);
             if (displayable)
             {
                 GameObject newItem = Instantiate(statsItemPrefab, statsPanel);

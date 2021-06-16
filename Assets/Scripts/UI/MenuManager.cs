@@ -42,7 +42,6 @@ public class MenuManager : MonoBehaviour
     IEnumerator MenuTransition(string name)
     {
         anim.SetTrigger("Start");
-        menuChange?.Invoke();
 
         yield return new WaitForSeconds(transitionTime);
 
@@ -58,7 +57,7 @@ public class MenuManager : MonoBehaviour
             }
         }
 
-        
+        menuChange?.Invoke();
     }
     //IEnumerator MenuTransition(Menu menu)
     //{
