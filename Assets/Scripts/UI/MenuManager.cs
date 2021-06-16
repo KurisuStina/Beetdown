@@ -10,6 +10,9 @@ public class MenuManager : MonoBehaviour
     public static MenuManager instance;
     public Menu[] menus;
 
+    public float transitionTime = 0.75f;
+    private Animator anim;
+
     void Awake()
     {
         if (instance)
@@ -18,12 +21,34 @@ public class MenuManager : MonoBehaviour
             return;
         }
         instance = this;
+
+        anim = GetComponent<Animator>();
     }
     public void OpenMenu(string name)
     {
+        StartCoroutine(MenuTransition(name));
+    }
+
+    public void OpenMenu(Menu menu)
+    {
+        StartCoroutine(MenuTransition(menu.Name));
+    }
+
+    public void CloseMenu(Menu menu)
+    {
+        menu.Close();
+    }
+
+    IEnumerator MenuTransition(string name)
+    {
+        anim.SetTrigger("Start");
+        menuChange?.Invoke();
+
+        yield return new WaitForSeconds(transitionTime);
+
         foreach (Menu m in menus)
         {
-            if(m.Name == name)
+            if (m.Name == name)
             {
                 m.Open();
             }
@@ -32,25 +57,28 @@ public class MenuManager : MonoBehaviour
                 CloseMenu(m);
             }
         }
-        menuChange?.Invoke();
+
+        
     }
+    //IEnumerator MenuTransition(Menu menu)
+    //{
+    //    anim.SetTrigger("Start");
 
-    public void OpenMenu(Menu menu)
+    //    foreach (Menu m in menus)
+    //    {
+    //        if (m.isOpen)
+    //        {
+    //            CloseMenu(m);
+    //        }
+    //    }
+    //    menu.Open();
+
+    //    menuChange?.Invoke();
+    //}
+
+    void TransitionAnimation()
     {
-        foreach (Menu m in menus)
-        {
-            if (m.isOpen)
-            {
-                CloseMenu(m);
-            }
-        }
-        menu.Open();
-
-        menuChange?.Invoke();
-    }
-
-    public void CloseMenu(Menu menu)
-    {
-        menu.Close();
+        Debug.Log("Play Transition");
+        anim.Play("MenuTransition");
     }
 }

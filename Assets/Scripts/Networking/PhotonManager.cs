@@ -14,7 +14,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     //Change this on each publish
     private const string GameVersion = "0.0.1";
 
-
+    #region Public Fields
     [SerializeField] public byte maxPlayersPerRoom = 4;
 
     public TMP_InputField roomNameInput;
@@ -30,12 +30,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     [Header("Start")]
     public GameObject startButton;
+    #endregion
 
-    
+    //public delegate void OnPlayerCustomize();
+    //public static event OnPlayerCustomize onPlayerCustomize;
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        if (instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
     }
 
@@ -49,6 +55,28 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(1);
     }
 
+    public void CreateRoom()
+    {
+        if (string.IsNullOrEmpty(roomNameInput.text))
+            return;
+        Debug.Log("Created room: " + roomNameInput.text);
+        PhotonNetwork.CreateRoom(roomNameInput.text, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+        MenuManager.instance.OpenMenu("room");
+    }
+    public void JoinRoom(RoomInfo roomInfo)
+    {
+        PhotonNetwork.JoinRoom(roomInfo.Name);
+        MenuManager.instance.OpenMenu("room");
+    }
+    public void LeaveRoom()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+
+    #region Photon Methods    
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to Master");
@@ -60,16 +88,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Joined Lobby");
     }
-
-
-
-    #region Room Methods
-    public void JoinRoom(RoomInfo roomInfo)
-    {
-
-        PhotonNetwork.JoinRoom(roomInfo.Name);
-        MenuManager.instance.OpenMenu("room");
-    }
+    
 
     public override void OnJoinedRoom()
     {
@@ -78,26 +97,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            Instantiate(playerItemPrefab, players).GetComponent<PlayerItem>().Initialize(player);
+            //Instantiate(playerItemPrefab, players).GetComponent<PlayerItem>().Initialize(player);
         }
 
-        startButton.SetActive(PhotonNetwork.IsMasterClient);
-    }
-
-
-    public void CreateRoom()
-    {
-        Debug.Log("Created room: " + roomNameInput.text);
-        PhotonNetwork.CreateRoom(roomNameInput.text, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
-    }
-
-
-    public void LeaveRoom()
-    {
-        if (PhotonNetwork.InRoom)
-        {
-            PhotonNetwork.LeaveRoom();
-        }
+        //startButton.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnLeftRoom()

@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Selectable : MonoBehaviour
+[AttributeUsage(AttributeTargets.Field)]
+public class Displayable : Attribute
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+}
+
+public class Selectable : ScriptableObject
+{
+    [Header("Properties")]
+    public string Name;
+    public string Description;
+    public Sprite sprite;
 }

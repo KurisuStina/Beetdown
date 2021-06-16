@@ -33,7 +33,7 @@ public class WeaponHandler : MonoBehaviour
                 if (!canAttack)
                     break;
                     
-                pv.RPC("Shoot", RpcTarget.All, Camera.main.ScreenToWorldPoint(Input.mousePosition), data.Speed);
+                pv.RPC("Shoot", RpcTarget.All, Camera.main.ScreenToWorldPoint(Input.mousePosition), data.ProjectileSpeed);
                 StartCoroutine(attackTimer());
 
                 break;
