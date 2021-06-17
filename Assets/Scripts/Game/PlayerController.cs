@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        PV.RPC("RPC_TakeDamage", RpcTarget.Others, damage);
     }
 
     void Die()
@@ -205,7 +205,6 @@ public class PlayerController : MonoBehaviour
         Projectile projectile = col.gameObject.GetComponent<Projectile>();
         if (projectile != null)
         {
-            Debug.Log("Hit");
             TakeDamage(projectile.getDamage());
             projectile.Hit();
         }
@@ -221,6 +220,7 @@ public class PlayerController : MonoBehaviour
         if (!PV.IsMine)
             return;
 
+        Debug.Log("Hit");
         healthManager.Damage(damage);
 
         if (healthManager.isDead())
