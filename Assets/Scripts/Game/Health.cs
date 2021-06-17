@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Health
 {
-    public float maxHealth;
+    [SerializeField] private float maxHealth;
     [SerializeField] private float health;
 
     public float getHealth()
@@ -13,8 +13,9 @@ public class Health
         return health;
     }
 
-    public void init()
+    public void Initialize()
     {
+        //maxHealth = character.MaxHealth;
         health = maxHealth;
     }
 

@@ -42,6 +42,8 @@ MonoBehaviour:
   - Shoot
   - pun_UpdateUI
   - punUpdateUI
+  - UpdateAngle
+  - RPC_TakeDamage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

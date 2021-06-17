@@ -39,14 +39,14 @@ public class PlayerItem : MonoBehaviourPunCallbacks
 
     public void UpdateUI(PlayerInfo p_Info)
     {
-        //playerAvatar.sprite = p_Info.character?.sprite;
-        //playerWeapon.sprite = p_Info.weapon?.sprite;
+        playerAvatar.sprite = p_Info.character?.sprite;
+        playerWeapon.sprite = p_Info.weapon?.sprite;
 
-        if (!photonView.IsMine)
-        {
-            Debug.Log("called rpc");
-            photonView.RPC("punUpdateUI", RpcTarget.AllBufferedViaServer);
-        }
+        //if (!photonView.IsMine)
+        //{
+        //    Debug.Log("called rpc");
+        //    photonView.RPC("punUpdateUI", RpcTarget.AllBufferedViaServer);
+        //}
         
     }
 

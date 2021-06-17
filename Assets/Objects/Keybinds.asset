@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69c3346175877304e9f1339bcff8e789, type: 3}
-  m_Name: Potato
+  m_Script: {fileID: 11500000, guid: c77eed909b692e441afdccc09ca3201c, type: 3}
+  m_Name: Keybinds
   m_EditorClassIdentifier: 
-  Name: Potato
-  Description: 
-  sprite: {fileID: 21300000, guid: b6b114657423366419ad2dfc08ebdd42, type: 3}
-  MaxHealth: 100
-  Speed: 7.5
+  left: 97
+  right: 100
+  jump: 32
+  pauseKey: 27
+  attack: 323
+  reload: 114

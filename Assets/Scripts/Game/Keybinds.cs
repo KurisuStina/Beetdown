@@ -16,5 +16,4 @@ public class Keybinds : ScriptableObject
 
     [Header("Game")]
     public KeyCode attack;
-    public KeyCode reload;
 }

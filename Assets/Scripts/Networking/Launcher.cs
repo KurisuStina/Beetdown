@@ -154,6 +154,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         GameObject playerItem = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerItem"), Vector2.zero, Quaternion.identity);
         playerItem.GetComponent<PlayerItem>().Initialize(newPlayer);
         playerItem.transform.SetParent(players);
+        playerItem.transform.localScale = new Vector3(1, 1, 1);
 
         OnPlayerListChange?.Invoke();
     }

@@ -10,8 +10,13 @@ public class InputManager : MonoBehaviour
 
     private float angleOffset = -90f;
 
-    void Start()
+    void Awake()
     {
+        if (instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
         DontDestroyOnLoad(gameObject);
 
         instance = this;
@@ -20,10 +25,7 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        if (Camera.main == null)
-        {
-            return;
-        }
+
     }
 
     public Vector3 mousePos()

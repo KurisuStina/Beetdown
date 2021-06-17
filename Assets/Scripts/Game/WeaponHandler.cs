@@ -2,57 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.IO;
 
 public class WeaponHandler : MonoBehaviour
 {
-    private PhotonView pv;
+    private PhotonView PV;
     public WeaponData data;
 
     [Header("Debugging")]
     [SerializeField] private bool canAttack = true;
 
+
     void Start()
     {
-        pv = GetComponent<PlayerMove>().photonView;
+        PV = GetComponent<PhotonView>();
     }
 
-    void Update()
+    public void Initialize(WeaponData weaponData)
     {
-
+        data = weaponData;
     }
+
 
     public void Attack()
     {
         switch (data.type)
         {
             case WeaponType.Melee:
+                if (!canAttack)
+                    break;
 
                 break;
 
             case WeaponType.Ranged:
                 if (!canAttack)
                     break;
-                    
-                pv.RPC("Shoot", RpcTarget.All, Camera.main.ScreenToWorldPoint(Input.mousePosition), data.ProjectileSpeed);
+
+                PV.RPC("Shoot", RpcTarget.All, Camera.main.ScreenToWorldPoint(Input.mousePosition), data.ProjectileSpeed);
                 StartCoroutine(attackTimer());
 
                 break;
         }
     }
 
+    #region Photon RPC
+    [PunRPC]
+    void UpdateAngle(float mouseAngle)
+    {
+
+    }
+
     [PunRPC]
     void Shoot(Vector3 mousePosition, float speed)
     {
-        Projectile projectile = PhotonNetwork.Instantiate("Projectile", transform.position, Quaternion.Euler(0, 0, InputManager.instance.mouseAngle(mousePosition, transform.position) + getShootOffset())).GetComponent<Projectile>();
+        Projectile projectile = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Projectile"), transform.position, Quaternion.Euler(0, 0, InputManager.instance.mouseAngle(mousePosition, transform.position) + getShootOffset())).GetComponent<Projectile>();
         projectile.Set(data.projectileSprite, 
             InputManager.instance.mouseDirection(mousePosition, transform.position) * speed, data.Damage, 
             data.Range, 
             data.projectileSprite.bounds.extents, 
-            pv.IsMine,
+            PV.IsMine,
             data.Duration,
             data.Magnitude);
     }
 
+    #endregion
 
     IEnumerator attackTimer()
     {

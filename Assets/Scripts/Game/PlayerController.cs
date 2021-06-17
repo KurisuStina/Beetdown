@@ -2,25 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.Events;
 
-public class PlayerMove : MonoBehaviourPunCallbacks
+public class PlayerController : MonoBehaviour
 {
+    public static UnityAction OnPlayerHit;
+
     #region Private Fields
+    private PhotonView PV;
 
     private Rigidbody2D rb;
     private WeaponHandler wh;
-    
+    private CharacterData ch;
+
+    private SpriteRenderer sr;
+    private Animator anim;
+
+    private PlayerManager playerManager;
     #endregion
 
 
-    #region Private Serialized Fields
+    #region Private Serialized Fields/Debugging
     [SerializeField] private Vector2 moveDir;
 
     #endregion
 
 
     #region Public Fields
-    public static PlayerMove instance;
 
     public Health healthManager;
 
@@ -38,24 +46,30 @@ public class PlayerMove : MonoBehaviourPunCallbacks
     public float headCheckDistance = 0.05f;
     #endregion
 
-    void Start()
+
+    void Awake()
     {
-        instance = this;
+        PV = GetComponent<PhotonView>();
 
         rb = GetComponent<Rigidbody2D>();
         wh = GetComponent<WeaponHandler>();
-        healthManager.init();
+        sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 
-        if (!photonView.IsMine)
+        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+
+        if (!PV.IsMine)
         {
             gameObject.layer = 10;
             Destroy(rb);
         }
+        healthManager.Initialize();
+        //PlayerManager.OnPlayerSpawn += Initialize;
     }
 
     void Update()
     {
-        if (!photonView.IsMine)
+        if (!PV.IsMine)
             return;
 
         
@@ -75,18 +89,18 @@ public class PlayerMove : MonoBehaviourPunCallbacks
         #region Combat
         if (Input.GetKey(InputManager.instance.keybinds.attack))
         {
-                wh.Attack();
+            wh.Attack();
         }
         if (healthManager.isDead())
         {
-            photonView.RPC("Die", RpcTarget.AllBuffered);
+            PV.RPC("Die", RpcTarget.AllBuffered);
         }
         #endregion
     }
 
     void FixedUpdate()
     {
-        if (!photonView.IsMine)
+        if (!PV.IsMine)
             return;
 
         rb.velocity = new Vector2(moveDir.x * speed, moveDir.y);
@@ -101,10 +115,25 @@ public class PlayerMove : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
+    public void TakeDamage(float damage)
+    {
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+    }
+
     void Die()
     {
-        Destroy(gameObject);
+        playerManager.Die();
+    }
+
+    void Initialize(CharacterData charData, WeaponData weaponData)
+    {
+        Debug.Log("Initialized Player Controller");
+
+        ch = charData;
+        wh.Initialize(weaponData);
+        //healthManager.Initialize(charData);
+
+        sr.sprite = ch.sprite;
     }
 
     #region Helper Methods
@@ -176,8 +205,27 @@ public class PlayerMove : MonoBehaviourPunCallbacks
         Projectile projectile = col.gameObject.GetComponent<Projectile>();
         if (projectile != null)
         {
-            healthManager.Damage(projectile.getDamage());
+            Debug.Log("Hit");
+            TakeDamage(projectile.getDamage());
             projectile.Hit();
+        }
+    }
+
+    #endregion
+
+    #region Photon RPC
+
+    [PunRPC]
+    void RPC_TakeDamage(float damage)
+    {
+        if (!PV.IsMine)
+            return;
+
+        healthManager.Damage(damage);
+
+        if (healthManager.isDead())
+        {
+            Die();
         }
     }
 

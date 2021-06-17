@@ -19,8 +19,8 @@ MonoBehaviour:
   Damage: 5
   AttackSpeed: 1
   Range: 5
-  projectileSprite: {fileID: 0}
-  Speed: 0
+  projectileSprite: {fileID: 21300000, guid: beeff6eca8469974682658781d918168, type: 3}
+  ProjectileSpeed: 0
   Inaccuracy: 0
   Duration: 0
   Magnitude: 0
