@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.Events;
 using System.IO;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 
 public class Launcher : MonoBehaviourPunCallbacks
@@ -151,10 +152,16 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        GameObject playerItem = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerItem"), Vector2.zero, Quaternion.identity);
-        playerItem.GetComponent<PlayerItem>().Initialize(newPlayer);
-        playerItem.transform.SetParent(players);
-        playerItem.transform.localScale = new Vector3(1, 1, 1);
+        Hashtable customProperties = new Hashtable();
+        customProperties.Add(PlayerInfo.playerInfo, new PlayerInfo(RoomManager.instance.default_char, RoomManager.instance.default_weapon));
+
+        PhotonNetwork.LocalPlayer.CustomProperties = customProperties;
+        //Debug.Log(((PlayerInfo)PhotonNetwork.LocalPlayer.CustomProperties[PlayerInfo.playerInfo]).character.Name);
+        Debug.Log("Created Properties");
+
+        Instantiate(playerItemPrefab, players).GetComponent<PlayerItem>().Initialize(newPlayer);
+
+        
 
         OnPlayerListChange?.Invoke();
     }

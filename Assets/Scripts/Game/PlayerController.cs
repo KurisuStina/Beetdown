@@ -64,7 +64,6 @@ public class PlayerController : MonoBehaviour
             Destroy(rb);
         }
         healthManager.Initialize();
-        //PlayerManager.OnPlayerSpawn += Initialize;
     }
 
     void Update()

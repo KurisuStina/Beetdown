@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class PlayerManager : MonoBehaviour
 {
-    public static UnityAction<CharacterData, WeaponData> OnPlayerSpawn;
-
     PhotonView PV;
 
     private GameObject controller;
@@ -34,14 +32,8 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Created Player Controller");
         controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), Vector2.zero, Quaternion.identity, 0, new object[] { PV.ViewID });
 
-        OnPlayerSpawn?.Invoke(character, weapon);
     }
 
-    public void Initialize(PlayerInfo info)
-    {
-        character = info.character;
-        weapon = info.weapon;
-    }
 
     public void Die()
     {

@@ -111,11 +111,6 @@ public class Selection : MonoBehaviour
 
     public void Select(Selectable selection)
     {
-        if (selection is CharacterData)
-            RoomManager.instance.playerInfo.ChangeCharacter((CharacterData)selection);
-        else if (selection is WeaponData)
-            RoomManager.instance.playerInfo.ChangeWeapon((WeaponData)selection);
-
         MenuManager.instance.OpenMenu("room");
         OnCustomChange?.Invoke();
     }

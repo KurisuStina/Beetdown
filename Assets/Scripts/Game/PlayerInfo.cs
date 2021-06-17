@@ -6,6 +6,9 @@ using UnityEngine;
 public class PlayerInfo
 {
     public const string playerNamePref = "PlayerName";
+    public const string playerCharacter = "CustomCharacter";
+    public const string playerWeapon = "CustomWeapon";
+    public const string playerInfo = "PlayerInfo";
 
 
     public CharacterData character;
