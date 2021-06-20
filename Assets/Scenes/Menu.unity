@@ -1051,12 +1051,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce475864c849ccd46a2519f4229c14e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  default_char: {fileID: 11400000, guid: 4bb2d3328c798264cbbd1c1658d947e2, type: 2}
+  Characters:
+  - {fileID: 11400000, guid: 4bb2d3328c798264cbbd1c1658d947e2, type: 2}
+  - {fileID: 11400000, guid: 7486d0b13fe3fd04b89f4a50661ecf98, type: 2}
+  Weapons:
+  - {fileID: 11400000, guid: a149596163f33cf4dadbef2b7409efaf, type: 2}
+  - {fileID: 11400000, guid: b558dc35a858f6246b85f232d75fdaea, type: 2}
+  default_char: {fileID: 11400000, guid: 7486d0b13fe3fd04b89f4a50661ecf98, type: 2}
   default_weapon: {fileID: 11400000, guid: a149596163f33cf4dadbef2b7409efaf, type: 2}
-  playerInfo:
-    character: {fileID: 0}
-    weapon: {fileID: 0}
-  playerItem: {fileID: 0}
 --- !u!4 &463313128
 Transform:
   m_ObjectHideFlags: 0
@@ -1833,6 +1835,7 @@ GameObject:
   - component: {fileID: 788663467}
   - component: {fileID: 788663466}
   - component: {fileID: 788663465}
+  - component: {fileID: 788663468}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1905,6 +1908,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &788663468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788663464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c02985ef25725c45866066cf704e0da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &847738759
 GameObject:
   m_ObjectHideFlags: 0

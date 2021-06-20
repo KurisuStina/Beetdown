@@ -8,4 +8,10 @@ public class CharacterData : Selectable
     [Header("Stats")]
     [Displayable]public float MaxHealth;
     [Displayable]public float Speed;
+
+    [Header("Body")]
+    public Sprite Body;
+    public Sprite LeftArm;
+    public Sprite LeftFeet;
+    public Sprite RightFeet;
 }

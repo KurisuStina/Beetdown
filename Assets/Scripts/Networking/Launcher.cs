@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.Events;
 using System.IO;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 
 public class Launcher : MonoBehaviourPunCallbacks
@@ -50,13 +49,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         instance = this;
 
         OnPlayerListChange += SetStartButton;
+        //Selection.OnCustomChange += RefreshPlayerList;
     }
 
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
     }
-
 
 
     #region Methods
@@ -86,10 +85,20 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
+    void InstantiatePlayerItem(Player player)
+    {
+        Instantiate(playerItemPrefab, players).GetComponent<PlayerItem>().Initialize(player);
 
+        //GameObject playerItem = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerItem"), Vector2.zero, Quaternion.identity);
+        //playerItem.GetComponent<PlayerItem>().Initialize(player);
+        //playerItem.transform.SetParent(players);
+        //playerItem.transform.localScale = Vector3.one;
+    }
+
+    
     #endregion
 
-    #region PlayerListChange Methods
+    #region EventChange Methods
 
     void SetStartButton()
     {
@@ -118,9 +127,10 @@ public class Launcher : MonoBehaviourPunCallbacks
         Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
 
+        //SetCustomProperties(new Vector2(0, 0));
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            Instantiate(playerItemPrefab, players).GetComponent<PlayerItem>().Initialize(player);
+            InstantiatePlayerItem(player);
         }
 
         OnPlayerListChange?.Invoke();
@@ -152,16 +162,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Hashtable customProperties = new Hashtable();
-        customProperties.Add(PlayerInfo.playerInfo, new PlayerInfo(RoomManager.instance.default_char, RoomManager.instance.default_weapon));
-
-        PhotonNetwork.LocalPlayer.CustomProperties = customProperties;
-        //Debug.Log(((PlayerInfo)PhotonNetwork.LocalPlayer.CustomProperties[PlayerInfo.playerInfo]).character.Name);
-        Debug.Log("Created Properties");
-
-        Instantiate(playerItemPrefab, players).GetComponent<PlayerItem>().Initialize(newPlayer);
-
-        
+        InstantiatePlayerItem(newPlayer);
 
         OnPlayerListChange?.Invoke();
     }

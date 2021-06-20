@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
     private WeaponHandler wh;
     private CharacterData ch;
 
-    private SpriteRenderer sr;
     private Animator anim;
 
     private PlayerManager playerManager;
@@ -44,6 +43,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Other Checks")]
     public float headCheckDistance = 0.05f;
+
+    [Header("Animation")]
+    public SpriteRenderer body;
+    public SpriteRenderer L_arm;
+    public SpriteRenderer L_feet;
+    public SpriteRenderer R_feet;
     #endregion
 
 
@@ -53,17 +58,16 @@ public class PlayerController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         wh = GetComponent<WeaponHandler>();
-        sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+        Initialize(playerManager.character, playerManager.weapon);
 
         if (!PV.IsMine)
         {
             gameObject.layer = 10;
             Destroy(rb);
         }
-        healthManager.Initialize();
     }
 
     void Update()
@@ -95,6 +99,12 @@ public class PlayerController : MonoBehaviour
             PV.RPC("Die", RpcTarget.AllBuffered);
         }
         #endregion
+        #region Animation
+        PV.RPC("RPC_FlipSprite", RpcTarget.All, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        anim.SetBool("Moving", moveDir.x != 0);
+        anim.SetFloat("yVel", rb.velocity.y);
+        anim.SetBool("Grounded", grounded());
+        #endregion
     }
 
     void FixedUpdate()
@@ -124,15 +134,17 @@ public class PlayerController : MonoBehaviour
         playerManager.Die();
     }
 
-    void Initialize(CharacterData charData, WeaponData weaponData)
+    public void Initialize(CharacterData charData, WeaponData weaponData)
     {
         Debug.Log("Initialized Player Controller");
 
         ch = charData;
         wh.Initialize(weaponData);
-        //healthManager.Initialize(charData);
+        healthManager.Initialize(charData);
 
-        sr.sprite = ch.sprite;
+        body.sprite = charData.Body;
+        L_feet.sprite = charData.LeftFeet;
+        R_feet.sprite = charData.RightFeet;
     }
 
     #region Helper Methods
@@ -228,5 +240,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    void RPC_FlipSprite(Vector3 mousePosition)
+    {
+        body.flipX = InputManager.instance.mouseDirection(mousePosition, transform.position).x < 0;
+    }
     #endregion
 }

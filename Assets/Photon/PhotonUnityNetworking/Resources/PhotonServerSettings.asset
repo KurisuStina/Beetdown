@@ -44,6 +44,14 @@ MonoBehaviour:
   - punUpdateUI
   - UpdateAngle
   - RPC_TakeDamage
+  - RPC_SetUI
+  - RPC_SetUp
+  - RPC_Shoot
+  - RPC_UpdateAngle
+  - RPC_Initialize
+  - RPC_Test
+  - RPC_DisplayPlayer
+  - RPC_FlipSprite
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -15,7 +15,7 @@ public class WeaponData : Selectable
 {
     [Displayable] public WeaponType type;
 
-    [Displayable] [Range(0, 100)] public int Damage;
+    [Displayable] [Range(0, WeaponHandler.maxDamage)] public int Damage;
     [Displayable] [Range(0, 5)] public float AttackSpeed; // attacks once every attackSpeed seconds
     [Displayable] [Range(0, 100)] public float Range; // for ranged weapons, this is the maximum distance it can travel
 

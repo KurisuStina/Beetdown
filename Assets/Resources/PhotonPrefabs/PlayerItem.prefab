@@ -112,9 +112,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ef5adcb3fb7cf7468fe41de7bc0dd41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAvatar: {fileID: 4844014231340320465}
+  playerCharacter: {fileID: 4844014231340320465}
   playerWeapon: {fileID: 4844014231630618851}
   playerName: {fileID: 4844014231888694844}
+  playerInfo: {x: 0, y: 0}
 --- !u!1 &4844014231340320467
 GameObject:
   m_ObjectHideFlags: 0

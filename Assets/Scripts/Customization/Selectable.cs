@@ -14,5 +14,6 @@ public class Selectable : ScriptableObject
     [Header("Properties")]
     public string Name;
     public string Description;
+    public Sprite UI_sprite;
     public Sprite sprite;
 }

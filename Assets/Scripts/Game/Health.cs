@@ -13,9 +13,9 @@ public class Health
         return health;
     }
 
-    public void Initialize()
+    public void Initialize(CharacterData character)
     {
-        //maxHealth = character.MaxHealth;
+        maxHealth = character.MaxHealth;
         health = maxHealth;
     }
 

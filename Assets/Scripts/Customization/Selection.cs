@@ -6,6 +6,9 @@ using System;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using Photon.Pun;
+using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class SelectionItem : MonoBehaviour
 {
@@ -32,6 +35,8 @@ public class Selection : MonoBehaviour
     public Transform statsPanel;
     public GameObject statsItemPrefab;
 
+    private Hashtable customProperties = new Hashtable();
+
     void Awake()
     {
         MenuManager.OnMenuChange += Initialize;
@@ -50,7 +55,7 @@ public class Selection : MonoBehaviour
         foreach(Selectable selection in selections)
         {
             GameObject newItem = Instantiate(selectionItemPrefab, selectionPanel);
-            newItem.GetComponent<Image>().sprite = selection.sprite;
+            newItem.GetComponent<Image>().sprite = selection.UI_sprite;
 
             #region Init SelectionItem
             SelectionItem sItem = newItem.AddComponent<SelectionItem>();
@@ -112,8 +117,57 @@ public class Selection : MonoBehaviour
     public void Select(Selectable selection)
     {
         MenuManager.instance.OpenMenu("room");
+        SetCustomProperties(selection);
         OnCustomChange?.Invoke();
     }
 
+    #endregion
+
+    #region Photon Custom Properties
+    public void SetCustomProperties(Selectable selection)
+    {
+        customProperties[PlayerInfo.playerInfo] = SearchSelectable(selection);
+
+        
+        PhotonNetwork.LocalPlayer.CustomProperties = customProperties;
+        Debug.Log("Set Properties for: " + PhotonNetwork.LocalPlayer.NickName);
+
+    }
+
+    public void SetCustomProperties(Vector2 info)
+    {
+        customProperties[PlayerInfo.playerInfo] = info;
+        PhotonNetwork.LocalPlayer.CustomProperties = customProperties;
+        Debug.Log("Set Properties for: " + PhotonNetwork.LocalPlayer.NickName);
+    }
+
+    //returns the Vector2 associated with the selectable index in RoomManager's list of chars and weapons
+    Vector2 SearchSelectable(Selectable selectable)
+    {
+        float charIndex, weaponIndex;
+        Player player = PhotonNetwork.LocalPlayer;
+        if (player.CustomProperties.ContainsKey(PlayerInfo.playerInfo))
+        {
+            charIndex = ((Vector2)player.CustomProperties[PlayerInfo.playerInfo]).x;
+            weaponIndex = ((Vector2)player.CustomProperties[PlayerInfo.playerInfo]).y;
+        }
+        else
+        {
+            charIndex = 0;
+            weaponIndex = 0;
+        }
+
+        CharacterData[] chars = RoomManager.instance.Characters;
+        WeaponData[] weapons = RoomManager.instance.Weapons;
+        for (int i = 0; i < chars.Length; i++)
+        {
+            if (selectable.Name == chars[i].Name)
+                charIndex = i;
+            else if (selectable.Name == weapons[i].Name)
+                weaponIndex = i;
+        }
+
+        return new Vector2(charIndex, weaponIndex);
+    }
     #endregion
 }

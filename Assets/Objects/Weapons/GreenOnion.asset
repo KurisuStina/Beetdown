@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff46731118881d143945ce0725975e2d, type: 3}
-  m_Name: Test Weapon
+  m_Name: GreenOnion
   m_EditorClassIdentifier: 
-  Name: Test
-  Description: 
-  sprite: {fileID: -8000167652336761950, guid: b35e34170994a304bbc1c37332eb3990, type: 3}
+  Name: Green Onion
+  Description: Very fragrant
+  UI_sprite: {fileID: 21300000, guid: 1e17a3a12e424e043b6f704fca7cf561, type: 3}
+  sprite: {fileID: 21300000, guid: 1e17a3a12e424e043b6f704fca7cf561, type: 3}
   type: 0
-  Damage: 5
-  AttackSpeed: 1
-  Range: 5
-  projectileSprite: {fileID: 21300000, guid: beeff6eca8469974682658781d918168, type: 3}
+  Damage: 8
+  AttackSpeed: 0.5
+  Range: 0
+  projectileSprite: {fileID: 0}
   ProjectileSpeed: 0
   Inaccuracy: 0
-  Duration: 0
-  Magnitude: 0
+  Duration: 1
+  Magnitude: 1

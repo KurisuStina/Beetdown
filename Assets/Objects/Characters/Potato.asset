@@ -14,6 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Potato
   Description: 
+  UI_sprite: {fileID: 21300000, guid: b6b114657423366419ad2dfc08ebdd42, type: 3}
   sprite: {fileID: 21300000, guid: b6b114657423366419ad2dfc08ebdd42, type: 3}
   MaxHealth: 100
   Speed: 7.5
+  Body: {fileID: -8000167652336761950, guid: b35e34170994a304bbc1c37332eb3990, type: 3}
+  LeftArm: {fileID: 2075327094913387580, guid: b35e34170994a304bbc1c37332eb3990, type: 3}
+  LeftFeet: {fileID: -7549714516142542255, guid: b35e34170994a304bbc1c37332eb3990,
+    type: 3}
+  RightFeet: {fileID: -4264451185305436265, guid: b35e34170994a304bbc1c37332eb3990,
+    type: 3}
